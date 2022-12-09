@@ -3,6 +3,7 @@ import BodyClassName from "react-body-classname"
 import sanitizeHtml from "sanitize-html"
 import {Helmet} from "react-helmet"
 import LoadedImageUrl from "components/utils/loaded-image-url"
+import HeaderPortal from "components/header-portal"
 
 import "components/styles/page-listings.scss"
 
@@ -18,22 +19,23 @@ const Listing = props => {
     return (
         <BodyClassName className="header-overlap page-listing-detail">
             <>
+            <HeaderPortal><h1 className="visually-hidden">Camp Spots - {data.listingName}</h1></HeaderPortal>
                 <div>
                     <div
                         className="page-header"
                         style={{backgroundImage: `url(${headerImageUrl}`}}
                     >
                         <div className="page-header-content wide-layout">
-                            <div className="listing-name">{data.listingName}</div>
+                            <h2 className="listing-name">{data.listingName}</h2>
                             <p className="location">{data.location}</p>
                         </div>
                     </div>
                     <div className="wide-layout two-parts-70-30">
                         <div>
-                            <div>Description</div>
+                            <h3 className="h4-style">Description</h3>
                             <div className="description-text" dangerouslySetInnerHTML={{__html: sanitizeHtml(data.description)}} />
 
-                            Amenities
+                            <h3 className="h4-style">Amenities</h3>
                             <div className="amenity-icons grid">
                             {data.amenities.map((amenity, index) => {
                                 return <div key={index}>
@@ -43,7 +45,7 @@ const Listing = props => {
                             </div>
                         </div>
                         <div>
-                            Calendar
+                            <h3 className="h4-style">Calendar</h3>
                             <DatePicker />
                         </div>
                     </div>
