@@ -7,7 +7,7 @@ const SubNavLinkGroup = ({headerText = '', items = []}) => {
             <h3 className="megamenu-submenu-header">
                 {headerText}
             </h3>
-            <ul>
+            <menu>
             {items.map((item, index) => (
                 <li className="megamenu-submenu-link" key={index}>
                     <a
@@ -19,7 +19,7 @@ const SubNavLinkGroup = ({headerText = '', items = []}) => {
                     </a>
                 </li>
             ))}
-            </ul>
+            </menu>
         </div>
     )
 }
