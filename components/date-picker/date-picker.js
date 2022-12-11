@@ -81,14 +81,19 @@ const DatePicker = ({ monthsInAdvance = 2, currDate }) => {
           className="btn-month btn-prev"
           disabled={isPrevMonthAvailable() ? '' : 'disabled'}
           onClick={setPrevMonth}
+          aria-label={`Previous month ${dayjs(activeDate).subtract(1, 'month').format('MMMM')}`}
         >
-          <span></span>
-          {dayjs(activeDate).subtract(1, 'month').format('MMM')}
+          <span aria-hidden="true"></span>
+          {dayjs(activeDate).subtract(1, 'month').format('MMMM')}
         </button>
         <h4>{dayjs(activeDate).format('MMMM YYYY')}</h4>
-        <button className="btn-month btn-next" onClick={setNextMonth}>
+        <button
+          className="btn-month btn-next"
+          onClick={setNextMonth}
+          aria-label={`Next month ${dayjs(activeDate).add(1, 'month').format('MMM')}`}
+        >
           {dayjs(activeDate).add(1, 'month').format('MMM')}
-          <span></span>
+          <span aria-hidden="true"></span>
         </button>
       </header>
       <div className="days-of-week">
@@ -114,12 +119,8 @@ const DatePicker = ({ monthsInAdvance = 2, currDate }) => {
                 .trim()}
               key={index}
               onClick={() => selectDay(day)}
-              aria-label={
-                dayjs(day.date).format('MMMM D') +
-                (day.isBooked ? ' is booked' : '') +
-                (day.isSelected ? ' is selected' : '')
-              }
-              aria-selected={isDaySelected(day) ? 'true' : 'false'}
+              aria-label={`${dayjs(day.date).format('MMMM D')}${isDaySelected(day) ? ' is selected' : ''}`}
+              aria-pressed={isDaySelected(day) ? 'true' : 'false'}
             >
               <time date-time={day.date}>{day.dayOfMonth}</time>
               <span className="icon" aria-hidden="true"></span>
@@ -127,27 +128,27 @@ const DatePicker = ({ monthsInAdvance = 2, currDate }) => {
           );
         })}
       </div>
-      <div className="date-key">
-        <div className="date-key-item-wrap">
+      <ul className="date-key" role="list">
+        <li className="date-key-item-wrap">
           <span className="date-key-item booked">
             <span className="icon" aria-hidden="true"></span>
           </span>
           <span className="date-key-text">Booked</span>
-        </div>
-        <div className="date-key-item-wrap">
+        </li>
+        <li className="date-key-item-wrap">
           <span className="date-key-item available">
             <span className="icon" aria-hidden="true"></span>
           </span>
           <span className="date-key-text">Available</span>
-        </div>
-        <div className="date-key-item-wrap">
+        </li>
+        <li className="date-key-item-wrap">
           <span className="date-key-item selected">
             <span className="icon" aria-hidden="true"></span>
           </span>
           <span className="date-key-text">Selected</span>
-        </div>
-      </div>
-      <div className="reserve-btn">Reserve</div>
+        </li>
+      </ul>
+      <button className="reserve-btn">Reserve</button>
     </div>
   );
 };
