@@ -77,15 +77,8 @@ const DatePicker = ({ monthsInAdvance = 2, currDate }) => {
 
   const chunkArray = (arr, size) =>
     arr.length > size ? [arr.slice(0, size), ...chunkArray(arr.slice(size), size)] : [arr];
-  const weeks = chunkArray(days, 7);
+  const weekRows = chunkArray(days, 7);
 
-  // const makeWeeks = (days) => {
-  //   let weeks = [];
-  //   // maybe use slice instead?
-  //   // weeks = days.array.forEach((day, index) => {});
-
-  //   return weeks;
-  // };
   return (
     <div className="date-picker">
       <header>
@@ -111,22 +104,36 @@ const DatePicker = ({ monthsInAdvance = 2, currDate }) => {
       <table>
         <thead>
           <tr className="days-of-week">
-            <th title="Sunday">S</th>
-            <th title="Monday">M</th>
-            <th title="Tuesday">T</th>
-            <th title="Wednesday">W</th>
-            <th title="Thursday">T</th>
-            <th title="Friday">F</th>
-            <th title="Saturday">S</th>
+            <th scope="col">
+              <span title="Sunday">S</span>
+            </th>
+            <th scope="col">
+              <span title="Monday">M</span>
+            </th>
+            <th scope="col">
+              <span title="Tuesday">T</span>
+            </th>
+            <th scope="col">
+              <span title="Wednesday">W</span>
+            </th>
+            <th scope="col">
+              <span title="Thursday">T</span>
+            </th>
+            <th scope="col">
+              <span title="Friday">F</span>
+            </th>
+            <th scope="col">
+              <span title="Saturday">S</span>
+            </th>
           </tr>
         </thead>
         <tbody>
-          {weeks.map((rows, index) => {
+          {weekRows.map((rows, index) => {
             return (
-              <tr className="date-grid">
-                {rows.map((day, index) => {
+              <tr className="date-grid" key={`week_${index}`}>
+                {rows.map((day) => {
                   return (
-                    <td>
+                    <td key={`day${day.dayOfMonth}${day.date}`}>
                       <button
                         className={[
                           'grid-btn',
@@ -136,7 +143,6 @@ const DatePicker = ({ monthsInAdvance = 2, currDate }) => {
                         ]
                           .join(' ')
                           .trim()}
-                        key={index}
                         onClick={() => selectDay(day)}
                         aria-label={`${dayjs(day.date).format('MMMM D')}${isDaySelected(day) ? ' is selected' : ''}`}
                         aria-pressed={isDaySelected(day) ? 'true' : 'false'}
