@@ -74,6 +74,18 @@ const DatePicker = ({ monthsInAdvance = 2, currDate }) => {
       }
     }
   };
+
+  const chunkArray = (arr, size) =>
+    arr.length > size ? [arr.slice(0, size), ...chunkArray(arr.slice(size), size)] : [arr];
+  const weeks = chunkArray(days, 7);
+
+  // const makeWeeks = (days) => {
+  //   let weeks = [];
+  //   // maybe use slice instead?
+  //   // weeks = days.array.forEach((day, index) => {});
+
+  //   return weeks;
+  // };
   return (
     <div className="date-picker">
       <header>
@@ -96,38 +108,50 @@ const DatePicker = ({ monthsInAdvance = 2, currDate }) => {
           <span aria-hidden="true"></span>
         </button>
       </header>
-      <div className="days-of-week">
-        <span title="Sunday">S</span>
-        <span title="Monday">M</span>
-        <span title="Tuesday">T</span>
-        <span title="Wednesday">W</span>
-        <span title="Thursday">T</span>
-        <span title="Friday">F</span>
-        <span title="Saturday">S</span>
-      </div>
-      <div className="date-grid">
-        {days.map((day, index) => {
-          return (
-            <button
-              className={[
-                'grid-btn',
-                day.isBooked ? 'booked' : '',
-                day.isCurrentMonth ? 'currentMonth' : '',
-                isDaySelected(day) ? 'selected' : '',
-              ]
-                .join(' ')
-                .trim()}
-              key={index}
-              onClick={() => selectDay(day)}
-              aria-label={`${dayjs(day.date).format('MMMM D')}${isDaySelected(day) ? ' is selected' : ''}`}
-              aria-pressed={isDaySelected(day) ? 'true' : 'false'}
-            >
-              <time date-time={day.date}>{day.dayOfMonth}</time>
-              <span className="icon" aria-hidden="true"></span>
-            </button>
-          );
-        })}
-      </div>
+      <table>
+        <thead>
+          <tr className="days-of-week">
+            <th title="Sunday">S</th>
+            <th title="Monday">M</th>
+            <th title="Tuesday">T</th>
+            <th title="Wednesday">W</th>
+            <th title="Thursday">T</th>
+            <th title="Friday">F</th>
+            <th title="Saturday">S</th>
+          </tr>
+        </thead>
+        <tbody>
+          {weeks.map((rows, index) => {
+            return (
+              <tr className="date-grid">
+                {rows.map((day, index) => {
+                  return (
+                    <td>
+                      <button
+                        className={[
+                          'grid-btn',
+                          day.isBooked ? 'booked' : '',
+                          day.isCurrentMonth ? 'currentMonth' : '',
+                          isDaySelected(day) ? 'selected' : '',
+                        ]
+                          .join(' ')
+                          .trim()}
+                        key={index}
+                        onClick={() => selectDay(day)}
+                        aria-label={`${dayjs(day.date).format('MMMM D')}${isDaySelected(day) ? ' is selected' : ''}`}
+                        aria-pressed={isDaySelected(day) ? 'true' : 'false'}
+                      >
+                        <time date-time={day.date}>{day.dayOfMonth}</time>
+                        <span className="icon" aria-hidden="true"></span>
+                      </button>
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
       <ul className="date-key" role="list">
         <li className="date-key-item-wrap">
           <span className="date-key-item booked">
